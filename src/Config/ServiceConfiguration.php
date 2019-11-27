@@ -2,7 +2,7 @@
 namespace Leoloso\ExamplesForPoP\Config;
 
 use PoP\API\FragmentCatalogue\FragmentUtils;
-use PoP\ComponentModel\Container\ContainerBuilderUtils;
+use PoP\API\Container\ContainerBuilderUtils as APIContainerBuilderUtils;
 use PoP\Root\Component\PHPServiceConfigurationTrait;
 
 class ServiceConfiguration
@@ -16,6 +16,7 @@ class ServiceConfiguration
         $githubRepo = $_REQUEST['githubRepo'] ?? 'leoloso/PoP';
         $zone = $_REQUEST['zone'] ?? 'MOZ028';
         $page = $_REQUEST['page'] ?? 1;
+        // Fragment resolution
         $contentMesh = <<<EOT
             getAsyncJSON([
                 github: "https://api.github.com/repos/$githubRepo",
@@ -49,15 +50,6 @@ class ServiceConfiguration
                 )
             ])@github
         EOT;
-        // Format the fragment
-        $contentMesh = FragmentUtils::removeWhitespaces($contentMesh);
-        $contentMesh = FragmentUtils::addSpacingToExpressions($contentMesh);
-        // Add RouteModuleProcessors to the Manager
-        ContainerBuilderUtils::injectValuesIntoService(
-            'fragment_catalogue_manager',
-            'add',
-            'contentMesh',
-            $contentMesh
-        );
+        APIContainerBuilderUtils::addPredefinedFragment('contentMesh', $contentMesh);
     }
 }
