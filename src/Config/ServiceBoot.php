@@ -1,15 +1,13 @@
 <?php
 namespace Leoloso\ExamplesForPoP\Config;
 
-// use PoP\Translation\Facades\TranslationAPIFacade;
-use PoP\Root\Component\PHPServiceConfigurationTrait;
-use PoP\API\Container\ContainerBuilderUtils as APIContainerBuilderUtils;
+use PoP\Translation\Facades\TranslationAPIFacade;
+use PoP\API\Facades\PersistedFragmentManagerFacade;
+use PoP\API\PersistedFragments\PersistedFragmentUtils;
 
-class ServiceConfiguration
+class ServiceBoot
 {
-    use PHPServiceConfigurationTrait;
-
-    protected static function configure()
+    public static function boot()
     {
         // 'contentMesh' fragment
         // Initialization of parameters
@@ -50,12 +48,15 @@ class ServiceConfiguration
                 )
             ])@github
 EOT;
-        // $translationAPI = TranslationAPIFacade::getInstance();
-        APIContainerBuilderUtils::addFragmentToCatalogueService(
+        // Format the fragment: Remove the tabs and new lines
+        $contentMesh = PersistedFragmentUtils::removeWhitespaces($contentMesh);
+        // Inject the values into the service
+        $translationAPI = TranslationAPIFacade::getInstance();
+        $persistedFragmentManager = PersistedFragmentManagerFacade::getInstance();
+        $persistedFragmentManager->add(
             'contentMesh',
             $contentMesh,
-            // $translationAPI->__('Fetch \'content mesh\' data (i.e. data from different services required to power the application), including repository data from GitHub, weather data from the National Weather Service, and random photo data from Unsplash', 'examples-for-pop')
-            'Fetch \'content mesh\' data (i.e. data from different services required to power the application), including repository data from GitHub, weather data from the National Weather Service, and random photo data from Unsplash'
+            $translationAPI->__('Fetch \'content mesh\' data (i.e. data from different services required to power the application), including repository data from GitHub, weather data from the National Weather Service, and random photo data from Unsplash', 'examples-for-pop')
         );
     }
 }
