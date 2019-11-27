@@ -1,12 +1,15 @@
 <?php
 namespace Leoloso\ExamplesForPoP\Config;
 
-use PoP\Translation\Facades\TranslationAPIFacade;
+// use PoP\Translation\Facades\TranslationAPIFacade;
+use PoP\Root\Component\PHPServiceConfigurationTrait;
 use PoP\API\Container\ContainerBuilderUtils as APIContainerBuilderUtils;
 
-class ServiceBoot
+class ServiceConfiguration
 {
-    public static function boot()
+    use PHPServiceConfigurationTrait;
+
+    protected static function configure()
     {
         // 'contentMesh' fragment
         // Initialization of parameters
@@ -47,11 +50,12 @@ class ServiceBoot
                 )
             ])@github
 EOT;
-        $translationAPI = TranslationAPIFacade::getInstance();
+        // $translationAPI = TranslationAPIFacade::getInstance();
         APIContainerBuilderUtils::addFragmentToCatalogueService(
             'contentMesh',
             $contentMesh,
-            $translationAPI->__('Fetch \'content mesh\' data (i.e. data from different services required to power the application), including repository data from GitHub, weather data from the National Weather Service, and random photo data from Unsplash', 'examples-for-pop')
+            // $translationAPI->__('Fetch \'content mesh\' data (i.e. data from different services required to power the application), including repository data from GitHub, weather data from the National Weather Service, and random photo data from Unsplash', 'examples-for-pop')
+            'Fetch \'content mesh\' data (i.e. data from different services required to power the application), including repository data from GitHub, weather data from the National Weather Service, and random photo data from Unsplash'
         );
     }
 }
