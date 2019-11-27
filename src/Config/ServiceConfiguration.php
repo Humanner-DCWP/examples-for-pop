@@ -50,6 +50,6 @@ class ServiceConfiguration
                 )
             ])@github
         EOT;
-        APIContainerBuilderUtils::addPredefinedFragment('contentMesh', $contentMesh);
+        APIContainerBuilderUtils::addFragmentToCatalogueService('contentMesh', $contentMesh);
     }
 }
