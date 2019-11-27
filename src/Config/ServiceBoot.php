@@ -46,12 +46,12 @@ class ServiceBoot
                     github.forks_count
                 )
             ])@github
-        EOT;
+EOT;
         $translationAPI = TranslationAPIFacade::getInstance();
         APIContainerBuilderUtils::addFragmentToCatalogueService(
             'contentMesh',
             $contentMesh,
-            $translationAPI->__('Fetch \'content mesh\' data (i.e. data from different services required to power the application), including repository data from GitHub, weather data from the National Weather Service, and random photo data from Unsplash', 'examples-for-pop'),
+            $translationAPI->__('Fetch \'content mesh\' data (i.e. data from different services required to power the application), including repository data from GitHub, weather data from the National Weather Service, and random photo data from Unsplash', 'examples-for-pop')
         );
     }
 }
