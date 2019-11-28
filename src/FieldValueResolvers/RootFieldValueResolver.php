@@ -107,6 +107,7 @@ class RootFieldValueResolver extends AbstractDBDataFieldValueResolver
                 if (GeneralUtils::isError($meshServices)) {
                     return $meshServices;
                 }
+                $meshServices = (array)$meshServices;
                 return $fieldResolver->resolveValue(
                     $resultItem,
                     $fieldQueryInterpreter->getField(
