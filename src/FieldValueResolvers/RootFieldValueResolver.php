@@ -3,15 +3,21 @@ namespace Leoloso\ExamplesForPoP\FieldValueResolvers;
 
 use PoP\Engine\Misc\Extract;
 use PoP\ComponentModel\GeneralUtils;
+use PoP\API\FieldResolvers\RootFieldResolver;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\ComponentModel\Schema\TypeCastingHelpers;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
 use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
-use PoP\ComponentModel\FieldValueResolvers\AbstractOperatorOrHelperFieldValueResolver;
+use PoP\ComponentModel\FieldValueResolvers\AbstractDBDataFieldValueResolver;
 
-class HelperFieldValueResolver extends AbstractOperatorOrHelperFieldValueResolver
+class RootFieldValueResolver extends AbstractDBDataFieldValueResolver
 {
+    public static function getClassesToAttachTo(): array
+    {
+        return array(RootFieldResolver::class);
+    }
+
     public static function getFieldNamesToResolve(): array
     {
         return [
@@ -117,6 +123,7 @@ class HelperFieldValueResolver extends AbstractOperatorOrHelperFieldValueResolve
                 if (GeneralUtils::isError($meshServiceData)) {
                     return $meshServiceData;
                 }
+                $meshServiceData = (array)$meshServiceData;
                 return [
                     'weatherForecast' => Extract::getDataFromPath($fieldName, $meshServiceData, 'weather.periods'),
                     'photoGalleryURLs' => Extract::getDataFromPath($fieldName, $meshServiceData, 'photos.url'),
