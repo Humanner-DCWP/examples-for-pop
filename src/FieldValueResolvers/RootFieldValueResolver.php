@@ -1,7 +1,7 @@
 <?php
 namespace Leoloso\ExamplesForPoP\FieldValueResolvers;
 
-use PoP\Engine\Misc\Extract;
+use PoP\ComponentModel\ErrorUtils;
 use PoP\ComponentModel\GeneralUtils;
 use PoP\API\FieldResolvers\RootFieldResolver;
 use PoP\ComponentModel\Schema\SchemaDefinition;
@@ -129,12 +129,66 @@ class RootFieldValueResolver extends AbstractDBDataFieldValueResolver
                     return $meshServiceData;
                 }
                 $meshServiceData = (array)$meshServiceData;
+                $weatherForecast = $fieldResolver->resolveValue(
+                    $resultItem,
+                    $fieldQueryInterpreter->getField(
+                        'extract',
+                        [
+                            'object' => $meshServiceData,
+                            'path' => 'weather.periods',
+                        ]
+                    )
+                );
+                $photoGalleryURLs = $fieldResolver->resolveValue(
+                    $resultItem,
+                    $fieldQueryInterpreter->getField(
+                        'extract',
+                        [
+                            'object' => $meshServiceData,
+                            'path' => 'photos.url',
+                        ]
+                    )
+                );
+                $githubMetaDescription = $fieldResolver->resolveValue(
+                    $resultItem,
+                    $fieldQueryInterpreter->getField(
+                        'extract',
+                        [
+                            'object' => $meshServiceData,
+                            'path' => 'github.description',
+                        ]
+                    )
+                );
+                $githubMetaStarCount = $fieldResolver->resolveValue(
+                    $resultItem,
+                    $fieldQueryInterpreter->getField(
+                        'extract',
+                        [
+                            'object' => $meshServiceData,
+                            'path' => 'github.stargazers_count',
+                        ]
+                    )
+                );
+                $errorFieldValues = array_filter(
+                    [
+                        $weatherForecast,
+                        $photoGalleryURLs,
+                        $githubMetaDescription,
+                        $githubMetaStarCount,
+                    ],
+                    function($fieldValue) {
+                        return GeneralUtils::isError($fieldValue);
+                    }
+                );
+                if (!empty($errorFieldValues)) {
+                    return ErrorUtils::getNestedDBErrorsFieldError($errorFieldValues, $fieldName);
+                }
                 return [
-                    'weatherForecast' => Extract::getDataFromPath($fieldName, $meshServiceData, 'weather.periods'),
-                    'photoGalleryURLs' => Extract::getDataFromPath($fieldName, $meshServiceData, 'photos.url'),
+                    'weatherForecast' => $weatherForecast,
+                    'photoGalleryURLs' => $photoGalleryURLs,
                     'githubMeta' => [
-                        'description' => Extract::getDataFromPath($fieldName, $meshServiceData, 'github.description'),
-                        'starCount' => Extract::getDataFromPath($fieldName, $meshServiceData, 'github.stargazers_count'),
+                        'description' => $githubMetaDescription,
+                        'starCount' => $githubMetaStarCount,
                     ],
                 ];
         }
