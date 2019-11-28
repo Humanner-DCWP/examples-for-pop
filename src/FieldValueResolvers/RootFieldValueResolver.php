@@ -77,7 +77,7 @@ class RootFieldValueResolver extends AbstractDBDataFieldValueResolver
         return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($fieldResolver, $fieldName);
     }
 
-    public function resolveValue(FieldResolverInterface $fieldResolver, $resultItem, string $fieldName, array $fieldArgs = [])
+    public function resolveValue(FieldResolverInterface $fieldResolver, $resultItem, string $fieldName, array $fieldArgs = [], ?array $variables = null, ?array $expressions = null, array $options = [])
     {
         $fieldQueryInterpreter = FieldQueryInterpreterFacade::getInstance();
         switch ($fieldName) {
@@ -102,7 +102,7 @@ class RootFieldValueResolver extends AbstractDBDataFieldValueResolver
                     $fieldQueryInterpreter->getField(
                         'meshServices',
                         $fieldArgs
-                    )
+                    ), $variables, $expressions, $options
                 );
                 if (GeneralUtils::isError($meshServices)) {
                     return $meshServices;
@@ -115,7 +115,7 @@ class RootFieldValueResolver extends AbstractDBDataFieldValueResolver
                         [
                             'urls' => $meshServices,
                         ]
-                    )
+                    ), $variables, $expressions, $options
                 );
             case 'contentMesh':
                 $meshServiceData = $fieldResolver->resolveValue(
@@ -123,7 +123,7 @@ class RootFieldValueResolver extends AbstractDBDataFieldValueResolver
                     $fieldQueryInterpreter->getField(
                         'meshServiceData',
                         $fieldArgs
-                    )
+                    ), $variables, $expressions, $options
                 );
                 if (GeneralUtils::isError($meshServiceData)) {
                     return $meshServiceData;
@@ -137,7 +137,7 @@ class RootFieldValueResolver extends AbstractDBDataFieldValueResolver
                             'object' => $meshServiceData,
                             'path' => 'weather.periods',
                         ]
-                    )
+                    ), $variables, $expressions, $options
                 );
                 $photoGalleryURLs = $fieldResolver->resolveValue(
                     $resultItem,
@@ -147,7 +147,7 @@ class RootFieldValueResolver extends AbstractDBDataFieldValueResolver
                             'object' => $meshServiceData,
                             'path' => 'photos.url',
                         ]
-                    )
+                    ), $variables, $expressions, $options
                 );
                 $githubMetaDescription = $fieldResolver->resolveValue(
                     $resultItem,
@@ -157,7 +157,7 @@ class RootFieldValueResolver extends AbstractDBDataFieldValueResolver
                             'object' => $meshServiceData,
                             'path' => 'github.description',
                         ]
-                    )
+                    ), $variables, $expressions, $options
                 );
                 $githubMetaStarCount = $fieldResolver->resolveValue(
                     $resultItem,
@@ -167,7 +167,7 @@ class RootFieldValueResolver extends AbstractDBDataFieldValueResolver
                             'object' => $meshServiceData,
                             'path' => 'github.stargazers_count',
                         ]
-                    )
+                    ), $variables, $expressions, $options
                 );
                 $maybeErrors = array_filter(
                     [
@@ -193,6 +193,6 @@ class RootFieldValueResolver extends AbstractDBDataFieldValueResolver
                 ];
         }
 
-        return parent::resolveValue($fieldResolver, $resultItem, $fieldName, $fieldArgs);
+        return parent::resolveValue($fieldResolver, $resultItem, $fieldName, $fieldArgs, $variables, $expressions, $options);
     }
 }
