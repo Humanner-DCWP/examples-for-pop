@@ -12,51 +12,60 @@ class ServiceBoot
         // 'contentMesh' fragment
         // Initialization of parameters
         $githubRepo = $_REQUEST['githubRepo'] ?? 'leoloso/PoP';
-        $zone = $_REQUEST['zone'] ?? 'MOZ028';
-        $page = $_REQUEST['page'] ?? 1;
+        $weatherZone = $_REQUEST['weatherZone'] ?? 'MOZ028';
+        $photoPage = $_REQUEST['photoPage'] ?? 1;
         // Fragment resolution
+        $meshServices = <<<EOT
+        echo([
+            github: "https://api.github.com/repos/$githubRepo",
+            weather: "https://api.weather.gov/zones/forecast/$weatherZone/forecast",
+            photos: "https://picsum.photos/v2/list?page=$photoPage&limit=10"
+        ])@meshServices
+EOT;
+        $meshServiceData = <<<EOT
+        --meshServices|
+        getAsyncJSON(getSelfProp(%self%, meshServices))@meshServiceData
+EOT;
         $contentMesh = <<<EOT
-            getAsyncJSON([
-                github: "https://api.github.com/repos/$githubRepo",
-                weather: "https://api.weather.gov/zones/forecast/$zone/forecast",
-                photos: "https://picsum.photos/v2/list?page=$page&limit=10"
-            ])@contentMesh|
-            extract(
-                getSelfProp(%self%, contentMesh),
+        --meshServiceData|
+        echo([
+            weatherForecast: extract(
+                getSelfProp(%self%, meshServiceData),
                 weather.periods
-            )@weather|
-            extract(
-                getSelfProp(%self%, contentMesh),
+            ),
+            photoGalleryURLs: extract(
+                getSelfProp(%self%, meshServiceData),
                 photos.url
-            )@photos|
-            echo([
-                name: extract(
-                    getSelfProp(%self%, contentMesh),
-                    github.full_name
-                ),
+            ),
+            githubMeta: echo([
                 description: extract(
-                    getSelfProp(%self%, contentMesh),
+                    getSelfProp(%self%, meshServiceData),
                     github.description
                 ),
                 starCount: extract(
-                    getSelfProp(%self%, contentMesh),
+                    getSelfProp(%self%, meshServiceData),
                     github.stargazers_count
-                ),
-                forkCount: extract(
-                    getSelfProp(%self%, contentMesh),
-                    github.forks_count
                 )
-            ])@github
+            ])
+        ])@contentMesh
 EOT;
-        // Format the fragment: Remove the tabs and new lines
-        $contentMesh = PersistedFragmentUtils::removeWhitespaces($contentMesh);
         // Inject the values into the service
         $translationAPI = TranslationAPIFacade::getInstance();
         $persistedFragmentManager = PersistedFragmentManagerFacade::getInstance();
         $persistedFragmentManager->add(
+            'meshServices',
+            PersistedFragmentUtils::removeWhitespaces($meshServices),
+            $translationAPI->__('Services required to create a \'content mesh\' for the application: GitHub data for a specific repository, weather data from the National Weather Service for a specific zone, and random photo data from Unsplash', 'examples-for-pop')
+        );
+        $persistedFragmentManager->add(
+            'meshServiceData',
+            PersistedFragmentUtils::removeWhitespaces($meshServiceData),
+            $translationAPI->__('Retrieve data from the mesh services. This fragment includes calling fragment --meshServices', 'examples-for-pop')
+        );
+        $persistedFragmentManager->add(
             'contentMesh',
-            $contentMesh,
-            $translationAPI->__('Fetch \'content mesh\' data (i.e. data from different services required to power the application), including repository data from GitHub, weather data from the National Weather Service, and random photo data from Unsplash', 'examples-for-pop')
+            PersistedFragmentUtils::removeWhitespaces($contentMesh),
+            $translationAPI->__('Retrieve data from the mesh services and create a \'content mesh\'. This fragment includes calling fragment --meshServiceData', 'examples-for-pop')
         );
     }
 }
