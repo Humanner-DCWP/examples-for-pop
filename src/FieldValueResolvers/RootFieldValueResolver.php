@@ -97,18 +97,22 @@ class RootFieldValueResolver extends AbstractDBDataFieldValueResolver
                     )
                 ];
             case 'meshServiceData':
+                $meshServices = $fieldResolver->resolveValue(
+                    $resultItem,
+                    $fieldQueryInterpreter->getField(
+                        'meshServices',
+                        $fieldArgs
+                    )
+                );
+                if (GeneralUtils::isError($meshServices)) {
+                    return $meshServices;
+                }
                 return $fieldResolver->resolveValue(
                     $resultItem,
                     $fieldQueryInterpreter->getField(
                         'getAsyncJSON',
                         [
-                            'urls' => $fieldResolver->resolveValue(
-                                $resultItem,
-                                $fieldQueryInterpreter->getField(
-                                    'meshServices',
-                                    $fieldArgs
-                                )
-                            ),
+                            'urls' => $meshServices,
                         ]
                     )
                 );
