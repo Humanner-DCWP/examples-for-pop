@@ -169,7 +169,7 @@ class RootFieldValueResolver extends AbstractDBDataFieldValueResolver
                         ]
                     )
                 );
-                $errorFieldValues = array_filter(
+                $maybeErrors = array_filter(
                     [
                         $weatherForecast,
                         $photoGalleryURLs,
@@ -180,8 +180,8 @@ class RootFieldValueResolver extends AbstractDBDataFieldValueResolver
                         return GeneralUtils::isError($fieldValue);
                     }
                 );
-                if (!empty($errorFieldValues)) {
-                    return ErrorUtils::getNestedDBErrorsFieldError($errorFieldValues, $fieldName);
+                if (!empty($maybeErrors)) {
+                    return ErrorUtils::getNestedErrorsFieldError($maybeErrors, $fieldName);
                 }
                 return [
                     'weatherForecast' => $weatherForecast,
