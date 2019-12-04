@@ -3,11 +3,11 @@ namespace Leoloso\ExamplesForPoP\FieldValueResolvers;
 
 use PoP\ComponentModel\ErrorUtils;
 use PoP\ComponentModel\GeneralUtils;
-use PoP\API\FieldResolvers\RootFieldResolver;
+use PoP\API\TypeResolvers\RootTypeResolver;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\ComponentModel\Schema\TypeCastingHelpers;
 use PoP\Translation\Facades\TranslationAPIFacade;
-use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
+use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
 use PoP\ComponentModel\FieldValueResolvers\AbstractDBDataFieldValueResolver;
 
@@ -15,7 +15,7 @@ class RootFieldValueResolver extends AbstractDBDataFieldValueResolver
 {
     public static function getClassesToAttachTo(): array
     {
-        return array(RootFieldResolver::class);
+        return array(RootTypeResolver::class);
     }
 
     public static function getFieldNamesToResolve(): array
@@ -27,17 +27,17 @@ class RootFieldValueResolver extends AbstractDBDataFieldValueResolver
         ];
     }
 
-    public function getSchemaFieldType(FieldResolverInterface $fieldResolver, string $fieldName): ?string
+    public function getSchemaFieldType(TypeResolverInterface $typeResolver, string $fieldName): ?string
     {
         $types = [
             'meshServices' => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_URL),
             'meshServiceData' => SchemaDefinition::TYPE_OBJECT,
             'contentMesh' => SchemaDefinition::TYPE_OBJECT,
         ];
-        return $types[$fieldName] ?? parent::getSchemaFieldType($fieldResolver, $fieldName);
+        return $types[$fieldName] ?? parent::getSchemaFieldType($typeResolver, $fieldName);
     }
 
-    public function getSchemaFieldArgs(FieldResolverInterface $fieldResolver, string $fieldName): array
+    public function getSchemaFieldArgs(TypeResolverInterface $typeResolver, string $fieldName): array
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         switch ($fieldName) {
@@ -63,10 +63,10 @@ class RootFieldValueResolver extends AbstractDBDataFieldValueResolver
                 ];
         }
 
-        return parent::getSchemaFieldArgs($fieldResolver, $fieldName);
+        return parent::getSchemaFieldArgs($typeResolver, $fieldName);
     }
 
-    public function getSchemaFieldDescription(FieldResolverInterface $fieldResolver, string $fieldName): ?string
+    public function getSchemaFieldDescription(TypeResolverInterface $typeResolver, string $fieldName): ?string
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         $descriptions = [
@@ -74,10 +74,10 @@ class RootFieldValueResolver extends AbstractDBDataFieldValueResolver
             'meshServiceData' => $translationAPI->__('Retrieve data from the mesh services', 'examples-for-pop'),
             'contentMesh' => $translationAPI->__('Retrieve data from the mesh services and create a \'content mesh\'', 'examples-for-pop'),
         ];
-        return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($fieldResolver, $fieldName);
+        return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($typeResolver, $fieldName);
     }
 
-    public function resolveValue(FieldResolverInterface $fieldResolver, $resultItem, string $fieldName, array $fieldArgs = [], ?array $variables = null, ?array $expressions = null, array $options = [])
+    public function resolveValue(TypeResolverInterface $typeResolver, $resultItem, string $fieldName, array $fieldArgs = [], ?array $variables = null, ?array $expressions = null, array $options = [])
     {
         $fieldQueryInterpreter = FieldQueryInterpreterFacade::getInstance();
         switch ($fieldName) {
@@ -97,7 +97,7 @@ class RootFieldValueResolver extends AbstractDBDataFieldValueResolver
                     )
                 ];
             case 'meshServiceData':
-                $meshServices = $fieldResolver->resolveValue(
+                $meshServices = $typeResolver->resolveValue(
                     $resultItem,
                     $fieldQueryInterpreter->getField(
                         'meshServices',
@@ -108,7 +108,7 @@ class RootFieldValueResolver extends AbstractDBDataFieldValueResolver
                     return $meshServices;
                 }
                 $meshServices = (array)$meshServices;
-                return $fieldResolver->resolveValue(
+                return $typeResolver->resolveValue(
                     $resultItem,
                     $fieldQueryInterpreter->getField(
                         'getAsyncJSON',
@@ -118,7 +118,7 @@ class RootFieldValueResolver extends AbstractDBDataFieldValueResolver
                     ), $variables, $expressions, $options
                 );
             case 'contentMesh':
-                $meshServiceData = $fieldResolver->resolveValue(
+                $meshServiceData = $typeResolver->resolveValue(
                     $resultItem,
                     $fieldQueryInterpreter->getField(
                         'meshServiceData',
@@ -129,7 +129,7 @@ class RootFieldValueResolver extends AbstractDBDataFieldValueResolver
                     return $meshServiceData;
                 }
                 $meshServiceData = (array)$meshServiceData;
-                $weatherForecast = $fieldResolver->resolveValue(
+                $weatherForecast = $typeResolver->resolveValue(
                     $resultItem,
                     $fieldQueryInterpreter->getField(
                         'extract',
@@ -139,7 +139,7 @@ class RootFieldValueResolver extends AbstractDBDataFieldValueResolver
                         ]
                     ), $variables, $expressions, $options
                 );
-                $photoGalleryURLs = $fieldResolver->resolveValue(
+                $photoGalleryURLs = $typeResolver->resolveValue(
                     $resultItem,
                     $fieldQueryInterpreter->getField(
                         'extract',
@@ -149,7 +149,7 @@ class RootFieldValueResolver extends AbstractDBDataFieldValueResolver
                         ]
                     ), $variables, $expressions, $options
                 );
-                $githubMetaDescription = $fieldResolver->resolveValue(
+                $githubMetaDescription = $typeResolver->resolveValue(
                     $resultItem,
                     $fieldQueryInterpreter->getField(
                         'extract',
@@ -159,7 +159,7 @@ class RootFieldValueResolver extends AbstractDBDataFieldValueResolver
                         ]
                     ), $variables, $expressions, $options
                 );
-                $githubMetaStarCount = $fieldResolver->resolveValue(
+                $githubMetaStarCount = $typeResolver->resolveValue(
                     $resultItem,
                     $fieldQueryInterpreter->getField(
                         'extract',
@@ -193,6 +193,6 @@ class RootFieldValueResolver extends AbstractDBDataFieldValueResolver
                 ];
         }
 
-        return parent::resolveValue($fieldResolver, $resultItem, $fieldName, $fieldArgs, $variables, $expressions, $options);
+        return parent::resolveValue($typeResolver, $resultItem, $fieldName, $fieldArgs, $variables, $expressions, $options);
     }
 }
