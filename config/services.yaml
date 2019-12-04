@@ -1,4 +1,4 @@
 services:
-    Leoloso\ExamplesForPoP\FieldValueResolvers\:
-        resource: '../src/FieldValueResolvers/*'
+    Leoloso\ExamplesForPoP\FieldResolvers\:
+        resource: '../src/FieldResolvers/*'
         public: true
