@@ -1,5 +1,5 @@
 <?php
-namespace Leoloso\ExamplesForPoP\FieldValueResolvers;
+namespace Leoloso\ExamplesForPoP\FieldResolvers;
 
 use PoP\ComponentModel\ErrorUtils;
 use PoP\ComponentModel\GeneralUtils;
@@ -9,9 +9,9 @@ use PoP\ComponentModel\Schema\TypeCastingHelpers;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
-use PoP\ComponentModel\FieldValueResolvers\AbstractDBDataFieldValueResolver;
+use PoP\ComponentModel\FieldResolvers\AbstractDBDataFieldResolver;
 
-class RootFieldValueResolver extends AbstractDBDataFieldValueResolver
+class RootFieldResolver extends AbstractDBDataFieldResolver
 {
     public static function getClassesToAttachTo(): array
     {
