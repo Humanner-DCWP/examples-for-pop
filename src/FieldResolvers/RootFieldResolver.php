@@ -30,7 +30,7 @@ class RootFieldResolver extends AbstractDBDataFieldResolver
     public function getSchemaFieldType(TypeResolverInterface $typeResolver, string $fieldName): ?string
     {
         $types = [
-            'meshServices' => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_URL),
+            'meshServices' => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_URL),
             'meshServiceData' => SchemaDefinition::TYPE_OBJECT,
             'contentMesh' => SchemaDefinition::TYPE_OBJECT,
         ];
