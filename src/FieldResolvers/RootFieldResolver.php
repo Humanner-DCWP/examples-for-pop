@@ -49,7 +49,7 @@ class RootFieldResolver extends AbstractDBDataFieldResolver
                         SchemaDefinition::ARGNAME_NAME => 'githubRepo',
                         SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_STRING,
                         SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('GitHub repository for which to fetch data, in format \'account/repo\' (eg: \'leoloso/PoP\')', 'examples-for-pop'),
-                        SchemaDefinition::ARGNAME_DEFAULT_VALUE => json_encode('leoloso/PoP'),
+                        SchemaDefinition::ARGNAME_DEFAULT_VALUE => 'leoloso/PoP',
                     ],
                     [
                         SchemaDefinition::ARGNAME_NAME => 'weatherZone',
