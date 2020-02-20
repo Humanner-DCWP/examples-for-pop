@@ -2,3 +2,7 @@ services:
     Leoloso\ExamplesForPoP\FieldResolvers\:
         resource: '../src/FieldResolvers/*'
         public: true
+
+    Leoloso\ExamplesForPoP\DirectiveResolvers\:
+        resource: '../src/DirectiveResolvers/*'
+        public: true
