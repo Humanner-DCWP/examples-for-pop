@@ -97,6 +97,21 @@ EOT;
             $translationAPI->__('Pre-defined set of user properties', 'examples-for-pop')
         );
 
+        // GraphQL fragments
+        $userPropsGraphQLPersistedFragment = <<<EOT
+        {
+            id
+            name
+            url
+        }
+EOT;
+        // Inject the values into the service
+        GraphQLPersistedQueryUtils::addPersistedFragment(
+            'userProps',
+            $userPropsGraphQLPersistedFragment,
+            $translationAPI->__('User properties', 'examples-for-pop')
+        );
+
         // GraphQL queries
         $userPropsGraphQLPersistedQuery = <<<EOT
         query {
