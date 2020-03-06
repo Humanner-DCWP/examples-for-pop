@@ -4,7 +4,7 @@ namespace Leoloso\ExamplesForPoP\Config;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\API\Facades\PersistedFragmentManagerFacade;
 use PoP\API\Facades\PersistedQueryManagerFacade;
-use PoP\API\PersistedFragments\PersistedFragmentUtils;
+use PoP\API\PersistedQueries\PersistedQueryUtils;
 
 class ServiceBoot
 {
@@ -55,17 +55,17 @@ EOT;
         $persistedFragmentManager = PersistedFragmentManagerFacade::getInstance();
         $persistedFragmentManager->add(
             'meshServices',
-            PersistedFragmentUtils::removeWhitespaces($meshServicesPersistedFragment),
+            PersistedQueryUtils::removeWhitespaces($meshServicesPersistedFragment),
             $translationAPI->__('Services required to create a \'content mesh\' for the application: GitHub data for a specific repository, weather data from the National Weather Service for a specific zone, and random photo data from Unsplash', 'examples-for-pop')
         );
         $persistedFragmentManager->add(
             'meshServiceData',
-            PersistedFragmentUtils::removeWhitespaces($meshServiceDataPersistedFragment),
+            PersistedQueryUtils::removeWhitespaces($meshServiceDataPersistedFragment),
             $translationAPI->__('Retrieve data from the mesh services. This fragment includes calling fragment --meshServices', 'examples-for-pop')
         );
         $persistedFragmentManager->add(
             'contentMesh',
-            PersistedFragmentUtils::removeWhitespaces($contentMeshPersistedFragment),
+            PersistedQueryUtils::removeWhitespaces($contentMeshPersistedFragment),
             $translationAPI->__('Retrieve data from the mesh services and create a \'content mesh\'. This fragment includes calling fragment --meshServiceData', 'examples-for-pop')
         );
 
@@ -77,7 +77,7 @@ EOT;
         $persistedQueryManager = PersistedQueryManagerFacade::getInstance();
         $persistedQueryManager->add(
             'contentMesh',
-            PersistedFragmentUtils::removeWhitespaces($contentMeshPersistedQuery),
+            PersistedQueryUtils::removeWhitespaces($contentMeshPersistedQuery),
             $translationAPI->__('Retrieve data from the mesh services and create a \'content mesh\'', 'examples-for-pop')
         );
     }
