@@ -5,6 +5,7 @@ use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\API\Facades\PersistedFragmentManagerFacade;
 use PoP\API\Facades\PersistedQueryManagerFacade;
 use PoP\API\PersistedQueries\PersistedQueryUtils;
+use PoP\GraphQL\PersistedQueries\GraphQLPersistedQueryUtils;
 
 class ServiceBoot
 {
@@ -94,6 +95,37 @@ EOT;
             'userProps',
             PersistedQueryUtils::removeWhitespaces($userPropsPersistedQuery),
             $translationAPI->__('Pre-defined set of user properties', 'examples-for-pop')
+        );
+
+        // GraphQL queries
+        $userPropsGraphQLPersistedQuery = <<<EOT
+        query {
+            users {
+                ...userProps
+                posts {
+                    id
+                    title
+                    url
+                    comments {
+                        id
+                        date
+                        content
+                    }
+                }
+            }
+        }
+
+        fragment userProps on User {
+            id
+            name
+            url
+        }
+EOT;
+        // Inject the values into the service
+        GraphQLPersistedQueryUtils::addPersistedQuery(
+            'userPostsComments',
+            $userPropsGraphQLPersistedQuery,
+            $translationAPI->__('User properties, posts and comments', 'examples-for-pop')
         );
     }
 }

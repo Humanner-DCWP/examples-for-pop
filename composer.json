@@ -25,7 +25,8 @@
     ],
     "require": {
         "php" : "~7.1",
-        "getpop/api": "^1.0"
+        "getpop/api": "^1.0",
+        "getpop/graphql": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit" : ">=7.0",
