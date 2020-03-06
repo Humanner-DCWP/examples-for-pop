@@ -73,12 +73,27 @@ EOT;
         $contentMeshPersistedQuery = <<<EOT
         --contentMesh
 EOT;
+        $userPropsPersistedQuery = <<<EOT
+        users.
+            id|
+            name|
+            url|
+            posts.
+                id|
+                title|
+                url
+EOT;
         // Inject the values into the service
         $persistedQueryManager = PersistedQueryManagerFacade::getInstance();
         $persistedQueryManager->add(
             'contentMesh',
             PersistedQueryUtils::removeWhitespaces($contentMeshPersistedQuery),
             $translationAPI->__('Retrieve data from the mesh services and create a \'content mesh\'', 'examples-for-pop')
+        );
+        $persistedQueryManager->add(
+            'userProps',
+            PersistedQueryUtils::removeWhitespaces($userPropsPersistedQuery),
+            $translationAPI->__('Pre-defined set of user properties', 'examples-for-pop')
         );
     }
 }
