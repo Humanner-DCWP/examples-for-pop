@@ -30,15 +30,15 @@ class Component extends AbstractComponent
      *
      * @return void
      */
-    public static function boot()
+    public static function beforeBoot()
     {
-        parent::boot();
+        parent::beforeBoot();
 
         // Initialize services
-        ServiceBoot::boot();
+        ServiceBoot::beforeBoot();
 
         // Initialize classes
         ContainerBuilderUtils::attachFieldResolversFromNamespace(__NAMESPACE__.'\\FieldResolvers');
-        ContainerBuilderUtils::attachDirectiveResolversFromNamespace(__NAMESPACE__.'\\DirectiveResolvers');
+        ContainerBuilderUtils::attachAndRegisterDirectiveResolversFromNamespace(__NAMESPACE__.'\\DirectiveResolvers');
     }
 }

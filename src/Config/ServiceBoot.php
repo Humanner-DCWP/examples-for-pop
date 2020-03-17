@@ -9,7 +9,7 @@ use PoP\GraphQL\PersistedQueries\GraphQLPersistedQueryUtils;
 
 class ServiceBoot
 {
-    public static function boot()
+    public static function beforeBoot()
     {
         // 'contentMesh' persisted fragments
         // Initialization of parameters
