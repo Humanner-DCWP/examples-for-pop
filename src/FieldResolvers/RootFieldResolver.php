@@ -27,9 +27,8 @@ class RootFieldResolver extends Root_Version_0_1_0_FieldResolver
                 '0.1.0'
             );
             $descriptions = [
-                'meshServices' => $deprecationMessage,
-                'meshServiceData' => $deprecationMessage,
-                'contentMesh' => $deprecationMessage,
+                'userServiceURLs' => $deprecationMessage,
+                'userServiceData' => $deprecationMessage,
             ];
             return $descriptions[$fieldName] ?? parent::getSchemaFieldDeprecationDescription($typeResolver, $fieldName, $fieldArgs);
         }

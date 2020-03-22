@@ -1,6 +1,7 @@
 <?php
 namespace Leoloso\ExamplesForPoP\FieldResolvers;
 
+use PoP\ComponentModel\ErrorUtils;
 use PoP\ComponentModel\GeneralUtils;
 use PoP\API\TypeResolvers\RootTypeResolver;
 use PoP\ComponentModel\Schema\SchemaDefinition;
@@ -10,37 +11,28 @@ use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
 use PoP\ComponentModel\FieldResolvers\AbstractDBDataFieldResolver;
 
-class Root_Version_0_1_0_FieldResolver extends AbstractDBDataFieldResolver
+class MeshRootFieldResolver extends AbstractDBDataFieldResolver
 {
     public static function getClassesToAttachTo(): array
     {
         return array(RootTypeResolver::class);
     }
 
-    public static function getPriorityToAttachClasses(): ?int
-    {
-        // Higher priority => Process befor the current version fieldResolver
-        return 20;
-    }
-
-    public function getSchemaFieldVersion(TypeResolverInterface $typeResolver, string $fieldName): ?string
-    {
-        return '0.1.0';
-    }
-
     public static function getFieldNamesToResolve(): array
     {
         return [
-            'userServiceURLs',
-            'userServiceData',
+            'meshServices',
+            'meshServiceData',
+            'contentMesh',
         ];
     }
 
     public function getSchemaFieldType(TypeResolverInterface $typeResolver, string $fieldName): ?string
     {
         $types = [
-            'userServiceURLs' => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_URL),
-            'userServiceData' => SchemaDefinition::TYPE_OBJECT,
+            'meshServices' => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_URL),
+            'meshServiceData' => SchemaDefinition::TYPE_OBJECT,
+            'contentMesh' => SchemaDefinition::TYPE_OBJECT,
         ];
         return $types[$fieldName] ?? parent::getSchemaFieldType($typeResolver, $fieldName);
     }
@@ -50,8 +42,9 @@ class Root_Version_0_1_0_FieldResolver extends AbstractDBDataFieldResolver
         $schemaFieldArgs = parent::getSchemaFieldArgs($typeResolver, $fieldName);
         $translationAPI = TranslationAPIFacade::getInstance();
         switch ($fieldName) {
-            case 'userServiceURLs':
-            case 'userServiceData':
+            case 'meshServices':
+            case 'meshServiceData':
+            case 'contentMesh':
                 return array_merge(
                     $schemaFieldArgs,
                     [
@@ -84,8 +77,9 @@ class Root_Version_0_1_0_FieldResolver extends AbstractDBDataFieldResolver
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         $descriptions = [
-            'userServiceURLs' => $translationAPI->__('Services required to create a \'content mesh\' for the application: GitHub data for a specific repository, weather data from the National Weather Service for a specific zone, and random photo data from Unsplash', 'examples-for-pop'),
-            'userServiceData' => $translationAPI->__('Retrieve data from the mesh services', 'examples-for-pop'),
+            'meshServices' => $translationAPI->__('Services required to create a \'content mesh\' for the application: GitHub data for a specific repository, weather data from the National Weather Service for a specific zone, and random photo data from Unsplash', 'examples-for-pop'),
+            'meshServiceData' => $translationAPI->__('Retrieve data from the mesh services', 'examples-for-pop'),
+            'contentMesh' => $translationAPI->__('Retrieve data from the mesh services and create a \'content mesh\'', 'examples-for-pop'),
         ];
         return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($typeResolver, $fieldName);
     }
@@ -94,7 +88,7 @@ class Root_Version_0_1_0_FieldResolver extends AbstractDBDataFieldResolver
     {
         $fieldQueryInterpreter = FieldQueryInterpreterFacade::getInstance();
         switch ($fieldName) {
-            case 'userServiceURLs':
+            case 'meshServices':
                 return [
                     'github' => sprintf(
                         'https://api.github.com/repos/%s',
@@ -109,27 +103,101 @@ class Root_Version_0_1_0_FieldResolver extends AbstractDBDataFieldResolver
                         $fieldArgs['photoPage'] ?? rand(1, 20)
                     )
                 ];
-            case 'userServiceData':
-                $userServiceURLs = $typeResolver->resolveValue(
+            case 'meshServiceData':
+                $meshServices = $typeResolver->resolveValue(
                     $resultItem,
                     $fieldQueryInterpreter->getField(
-                        'userServiceURLs',
+                        'meshServices',
                         $fieldArgs
                     ), $variables, $expressions, $options
                 );
-                if (GeneralUtils::isError($userServiceURLs)) {
-                    return $userServiceURLs;
+                if (GeneralUtils::isError($meshServices)) {
+                    return $meshServices;
                 }
-                $userServiceURLs = (array)$userServiceURLs;
+                $meshServices = (array)$meshServices;
                 return $typeResolver->resolveValue(
                     $resultItem,
                     $fieldQueryInterpreter->getField(
                         'getAsyncJSON',
                         [
-                            'urls' => $userServiceURLs,
+                            'urls' => $meshServices,
                         ]
                     ), $variables, $expressions, $options
                 );
+            case 'contentMesh':
+                $meshServiceData = $typeResolver->resolveValue(
+                    $resultItem,
+                    $fieldQueryInterpreter->getField(
+                        'meshServiceData',
+                        $fieldArgs
+                    ), $variables, $expressions, $options
+                );
+                if (GeneralUtils::isError($meshServiceData)) {
+                    return $meshServiceData;
+                }
+                $meshServiceData = (array)$meshServiceData;
+                $weatherForecast = $typeResolver->resolveValue(
+                    $resultItem,
+                    $fieldQueryInterpreter->getField(
+                        'extract',
+                        [
+                            'object' => $meshServiceData,
+                            'path' => 'weather.periods',
+                        ]
+                    ), $variables, $expressions, $options
+                );
+                $photoGalleryURLs = $typeResolver->resolveValue(
+                    $resultItem,
+                    $fieldQueryInterpreter->getField(
+                        'extract',
+                        [
+                            'object' => $meshServiceData,
+                            'path' => 'photos.url',
+                        ]
+                    ), $variables, $expressions, $options
+                );
+                $githubMetaDescription = $typeResolver->resolveValue(
+                    $resultItem,
+                    $fieldQueryInterpreter->getField(
+                        'extract',
+                        [
+                            'object' => $meshServiceData,
+                            'path' => 'github.description',
+                        ]
+                    ), $variables, $expressions, $options
+                );
+                $githubMetaStarCount = $typeResolver->resolveValue(
+                    $resultItem,
+                    $fieldQueryInterpreter->getField(
+                        'extract',
+                        [
+                            'object' => $meshServiceData,
+                            'path' => 'github.stargazers_count',
+                        ]
+                    ), $variables, $expressions, $options
+                );
+                $maybeErrors = array_filter(
+                    [
+                        $weatherForecast,
+                        $photoGalleryURLs,
+                        $githubMetaDescription,
+                        $githubMetaStarCount,
+                    ],
+                    function($fieldValue) {
+                        return GeneralUtils::isError($fieldValue);
+                    }
+                );
+                if (!empty($maybeErrors)) {
+                    return ErrorUtils::getNestedErrorsFieldError($maybeErrors, $fieldName);
+                }
+                return [
+                    'weatherForecast' => $weatherForecast,
+                    'photoGalleryURLs' => $photoGalleryURLs,
+                    'githubMeta' => [
+                        'description' => $githubMetaDescription,
+                        'starCount' => $githubMetaStarCount,
+                    ],
+                ];
         }
 
         return parent::resolveValue($typeResolver, $resultItem, $fieldName, $fieldArgs, $variables, $expressions, $options);
