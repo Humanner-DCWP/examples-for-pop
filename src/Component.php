@@ -13,7 +13,7 @@ use PoP\ComponentModel\Container\ContainerBuilderUtils;
 class Component extends AbstractComponent
 {
     use YAMLServicesTrait;
-    // const VERSION = '0.1.0';
+    const VERSION = '0.2.0';
 
     /**
      * Initialize services
