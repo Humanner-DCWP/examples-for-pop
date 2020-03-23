@@ -20,7 +20,7 @@ class MakeTitleDirectiveResolver extends MakeTitle_Version_0_2_0_DirectiveResolv
 
     public function resolveSchemaDirectiveWarningDescription(TypeResolverInterface $typeResolver): ?string
     {
-        if (Environment::enableSemanticVersioningConstraintsForFields()) {
+        if (Environment::enableSemanticVersionConstraints()) {
             // If the query doesn't specify what version of the directive to use, add a deprecation message
             if (!$this->directiveArgsForSchema[SchemaDefinition::ARGNAME_VERSION_CONSTRAINT]) {
                 $translationAPI = TranslationAPIFacade::getInstance();

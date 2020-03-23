@@ -20,7 +20,7 @@ class RootFieldResolver extends Root_Version_0_1_0_FieldResolver
 
     public function resolveSchemaValidationWarningDescription(TypeResolverInterface $typeResolver, string $fieldName, array $fieldArgs = []): ?string
     {
-        if (Environment::enableSemanticVersioningConstraintsForFields()) {
+        if (Environment::enableSemanticVersionConstraints()) {
             // If the query doesn't specify what version of the field to use, add a deprecation message
             if (!$fieldArgs[SchemaDefinition::ARGNAME_VERSION_CONSTRAINT]) {
                 $translationAPI = TranslationAPIFacade::getInstance();
