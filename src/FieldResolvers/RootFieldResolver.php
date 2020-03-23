@@ -1,6 +1,7 @@
 <?php
 namespace Leoloso\ExamplesForPoP\FieldResolvers;
 
+use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 
@@ -18,7 +19,7 @@ class RootFieldResolver extends Root_Version_0_1_0_FieldResolver
     public function getSchemaFieldDeprecationDescription(TypeResolverInterface $typeResolver, string $fieldName, array $fieldArgs = []): ?string
     {
         // If the query doesn't specify what version of the field to use, add a deprecation message
-        if (!$fieldArgs['versionConstraint']) {
+        if (!$fieldArgs[SchemaDefinition::ARGNAME_VERSION_CONSTRAINT]) {
             $translationAPI = TranslationAPIFacade::getInstance();
             $descriptions = [
                 'userServiceURLs' => sprintf(
