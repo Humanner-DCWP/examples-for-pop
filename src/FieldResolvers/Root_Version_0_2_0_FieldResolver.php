@@ -15,6 +15,11 @@ class Root_Version_0_2_0_FieldResolver extends Root_Version_0_1_0_FieldResolver
         return 30;
     }
 
+    public function decideCanProcessBasedOnVersionConstraint(TypeResolverInterface $typeResolver): bool
+    {
+        return true;
+    }
+
     public function getSchemaFieldArgs(TypeResolverInterface $typeResolver, string $fieldName): array
     {
         $schemaFieldArgs = parent::getSchemaFieldArgs($typeResolver, $fieldName);

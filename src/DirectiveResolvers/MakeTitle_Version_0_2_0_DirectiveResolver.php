@@ -18,6 +18,11 @@ class MakeTitle_Version_0_2_0_DirectiveResolver extends MakeTitle_Version_0_1_0_
         return '0.2.0';
     }
 
+    public function decideCanProcessBasedOnVersionConstraint(TypeResolverInterface $typeResolver): bool
+    {
+        return true;
+    }
+
     public function resolveDirective(TypeResolverInterface $typeResolver, array &$idsDataFields, array &$succeedingPipelineIDsDataFields, array &$resultIDItems, array &$unionDBKeyIDs, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$dbDeprecations, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
     {
         $fieldQueryInterpreter = FieldQueryInterpreterFacade::getInstance();

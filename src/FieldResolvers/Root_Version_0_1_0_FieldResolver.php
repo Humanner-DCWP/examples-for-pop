@@ -28,6 +28,11 @@ class Root_Version_0_1_0_FieldResolver extends AbstractDBDataFieldResolver
         return '0.1.0';
     }
 
+    public function decideCanProcessBasedOnVersionConstraint(TypeResolverInterface $typeResolver): bool
+    {
+        return true;
+    }
+
     public static function getFieldNamesToResolve(): array
     {
         return [

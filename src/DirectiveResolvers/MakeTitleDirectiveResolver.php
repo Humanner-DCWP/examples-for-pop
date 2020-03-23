@@ -13,9 +13,9 @@ class MakeTitleDirectiveResolver extends MakeTitle_Version_0_2_0_DirectiveResolv
         return null;
     }
 
-    public function getSchemaDirectiveVersion(TypeResolverInterface $typeResolver): ?string
+    public function decideCanProcessBasedOnVersionConstraint(TypeResolverInterface $typeResolver): bool
     {
-        return null;
+        return false;
     }
 
     public function resolveSchemaDirectiveWarningDescription(TypeResolverInterface $typeResolver): ?string

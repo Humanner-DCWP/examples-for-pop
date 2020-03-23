@@ -8,13 +8,14 @@ use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 
 class RootFieldResolver extends Root_Version_0_1_0_FieldResolver
 {
-    public function getSchemaFieldVersion(TypeResolverInterface $typeResolver, string $fieldName): ?string
-    {
-        return null;
-    }
     public static function getPriorityToAttachClasses(): ?int
     {
         return null;
+    }
+
+    public function decideCanProcessBasedOnVersionConstraint(TypeResolverInterface $typeResolver): bool
+    {
+        return false;
     }
 
     public function resolveSchemaValidationWarningDescription(TypeResolverInterface $typeResolver, string $fieldName, array $fieldArgs = []): ?string
