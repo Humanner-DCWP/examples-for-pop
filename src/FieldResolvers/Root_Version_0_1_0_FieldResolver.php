@@ -61,18 +61,6 @@ class Root_Version_0_1_0_FieldResolver extends AbstractDBDataFieldResolver
                             SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('GitHub repository for which to fetch data, in format \'account/repo\' (eg: \'leoloso/PoP\')', 'examples-for-pop'),
                             SchemaDefinition::ARGNAME_DEFAULT_VALUE => 'leoloso/PoP',
                         ],
-                        [
-                            SchemaDefinition::ARGNAME_NAME => 'weatherZone',
-                            SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_STRING,
-                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Zone from which to retrieve weather data, as listed in https://api.weather.gov/zones/forecast', 'examples-for-pop'),
-                            SchemaDefinition::ARGNAME_DEFAULT_VALUE => 'MOZ028',
-                        ],
-                        [
-                            SchemaDefinition::ARGNAME_NAME => 'photoPage',
-                            SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_INT,
-                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Page from which to fetch photo data. Default value: A random number between 1 and 20', 'examples-for-pop'),
-                            // SchemaDefinition::ARGNAME_DEFAULT_VALUE => 'A random number between 1 and 20',
-                        ],
                     ]
                 );
         }
@@ -84,8 +72,8 @@ class Root_Version_0_1_0_FieldResolver extends AbstractDBDataFieldResolver
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         $descriptions = [
-            'userServiceURLs' => $translationAPI->__('Services required to create a \'content mesh\' for the application: GitHub data for a specific repository, weather data from the National Weather Service for a specific zone, and random photo data from Unsplash', 'examples-for-pop'),
-            'userServiceData' => $translationAPI->__('Retrieve data from the mesh services', 'examples-for-pop'),
+            'userServiceURLs' => $translationAPI->__('Services used in the application: GitHub data for a specific repository', 'examples-for-pop'),
+            'userServiceData' => $translationAPI->__('Retrieve data from the services', 'examples-for-pop'),
         ];
         return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($typeResolver, $fieldName);
     }
@@ -100,14 +88,6 @@ class Root_Version_0_1_0_FieldResolver extends AbstractDBDataFieldResolver
                         'https://api.github.com/repos/%s',
                         $fieldArgs['githubRepo'] ?? 'leoloso/PoP'
                     ),
-                    'weather' => sprintf(
-                        'https://api.weather.gov/zones/forecast/%s/forecast',
-                        $fieldArgs['weatherZone'] ?? 'MOZ028'
-                    ),
-                    'photos' => sprintf(
-                        'https://picsum.photos/v2/list?page=%s&limit=10',
-                        $fieldArgs['photoPage'] ?? rand(1, 20)
-                    )
                 ];
             case 'userServiceData':
                 $userServiceURLs = $typeResolver->resolveValue(
@@ -115,7 +95,10 @@ class Root_Version_0_1_0_FieldResolver extends AbstractDBDataFieldResolver
                     $fieldQueryInterpreter->getField(
                         'userServiceURLs',
                         $fieldArgs
-                    ), $variables, $expressions, $options
+                    ),
+                    $variables,
+                    $expressions,
+                    $options
                 );
                 if (GeneralUtils::isError($userServiceURLs)) {
                     return $userServiceURLs;
@@ -128,7 +111,10 @@ class Root_Version_0_1_0_FieldResolver extends AbstractDBDataFieldResolver
                         [
                             'urls' => $userServiceURLs,
                         ]
-                    ), $variables, $expressions, $options
+                    ),
+                    $variables,
+                    $expressions,
+                    $options
                 );
         }
 
