@@ -8,7 +8,7 @@ class Root_Version_0_2_0_FieldResolver extends Root_Version_0_1_0_FieldResolver
 {
     public function getSchemaFieldVersion(TypeResolverInterface $typeResolver, string $fieldName): ?string
     {
-        return '0.2.0';;
+        return '0.2.0';
     }
     public static function getPriorityToAttachClasses(): ?int
     {

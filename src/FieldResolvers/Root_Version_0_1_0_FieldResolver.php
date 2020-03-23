@@ -19,7 +19,7 @@ class Root_Version_0_1_0_FieldResolver extends AbstractDBDataFieldResolver
 
     public static function getPriorityToAttachClasses(): ?int
     {
-        // Higher priority => Process befor the current version fieldResolver
+        // Higher priority => Process before the latest version fieldResolver
         return 20;
     }
 
