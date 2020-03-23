@@ -16,7 +16,7 @@ class RootFieldResolver extends Root_Version_0_1_0_FieldResolver
         return null;
     }
 
-    public function getSchemaFieldDeprecationDescription(TypeResolverInterface $typeResolver, string $fieldName, array $fieldArgs = []): ?string
+    public function resolveSchemaValidationWarningDescription(TypeResolverInterface $typeResolver, string $fieldName, array $fieldArgs = []): ?string
     {
         // If the query doesn't specify what version of the field to use, add a deprecation message
         if (!$fieldArgs[SchemaDefinition::ARGNAME_VERSION_CONSTRAINT]) {
@@ -42,8 +42,8 @@ class RootFieldResolver extends Root_Version_0_1_0_FieldResolver
                     )
                 ),
             ];
-            return $descriptions[$fieldName] ?? parent::getSchemaFieldDeprecationDescription($typeResolver, $fieldName, $fieldArgs);
+            return $descriptions[$fieldName] ?? parent::resolveSchemaValidationWarningDescription($typeResolver, $fieldName, $fieldArgs);
         }
-        return parent::getSchemaFieldDeprecationDescription($typeResolver, $fieldName, $fieldArgs);
+        return parent::resolveSchemaValidationWarningDescription($typeResolver, $fieldName, $fieldArgs);
     }
 }
