@@ -4,7 +4,6 @@ namespace Leoloso\ExamplesForPoP;
 use Leoloso\ExamplesForPoP\Config\ServiceBoot;
 use PoP\Root\Component\AbstractComponent;
 use PoP\Root\Component\YAMLServicesTrait;
-// use Leoloso\ExamplesForPoP\Config\ServiceConfiguration;
 use PoP\ComponentModel\Container\ContainerBuilderUtils;
 
 /**
@@ -22,7 +21,6 @@ class Component extends AbstractComponent
     {
         parent::init();
         self::initYAMLServices(dirname(__DIR__));
-        // ServiceConfiguration::init();
     }
 
     /**
@@ -40,5 +38,18 @@ class Component extends AbstractComponent
         // Initialize classes
         ContainerBuilderUtils::attachFieldResolversFromNamespace(__NAMESPACE__.'\\FieldResolvers');
         ContainerBuilderUtils::attachAndRegisterDirectiveResolversFromNamespace(__NAMESPACE__.'\\DirectiveResolvers');
+    }
+
+    /**
+     * Boot component
+     *
+     * @return void
+     */
+    public static function afterBoot()
+    {
+        parent::afterBoot();
+
+        // Initialize classes
+        ContainerBuilderUtils::attachTypeResolverDecoratorsFromNamespace(__NAMESPACE__.'\\TypeResolverDecorators');
     }
 }

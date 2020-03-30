@@ -6,3 +6,7 @@ services:
     Leoloso\ExamplesForPoP\DirectiveResolvers\:
         resource: '../src/DirectiveResolvers/*'
         public: true
+
+    Leoloso\ExamplesForPoP\TypeResolverDecorators\:
+        resource: '../src/TypeResolverDecorators/*'
+        public: true
