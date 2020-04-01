@@ -5,6 +5,7 @@ use Leoloso\ExamplesForPoP\Config\ServiceBoot;
 use PoP\Root\Component\AbstractComponent;
 use PoP\Root\Component\YAMLServicesTrait;
 use PoP\ComponentModel\Container\ContainerBuilderUtils;
+use PoP\ComponentModel\ComponentConfiguration as ComponentModelComponentConfiguration;
 
 /**
  * Initialize component
@@ -50,6 +51,9 @@ class Component extends AbstractComponent
         parent::afterBoot();
 
         // Initialize classes
-        ContainerBuilderUtils::attachTypeResolverDecoratorsFromNamespace(__NAMESPACE__.'\\TypeResolverDecorators');
+        ContainerBuilderUtils::attachTypeResolverDecoratorsFromNamespace(__NAMESPACE__.'\\TypeResolverDecorators', false);
+        if (ComponentModelComponentConfiguration::useComponentModelCache()) {
+            ContainerBuilderUtils::attachTypeResolverDecoratorsFromNamespace(__NAMESPACE__.'\\TypeResolverDecorators\\Cache');
+        }
     }
 }

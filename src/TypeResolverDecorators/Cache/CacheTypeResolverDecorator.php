@@ -1,5 +1,5 @@
 <?php
-namespace Leoloso\ExamplesForPoP\TypeResolverDecorators;
+namespace Leoloso\ExamplesForPoP\TypeResolverDecorators\Cache;
 
 use PoP\ComponentModel\TypeResolvers\AbstractTypeResolver;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
