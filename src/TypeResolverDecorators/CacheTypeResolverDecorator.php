@@ -10,7 +10,7 @@ use PoP\AccessControl\TypeResolverDecorators\AbstractPublicSchemaTypeResolverDec
 /**
  * Add directive @cache to fields expensive to calculate
  */
-class CacheFieldsTypeResolverDecorator extends AbstractPublicSchemaTypeResolverDecorator
+class CacheTypeResolverDecorator extends AbstractPublicSchemaTypeResolverDecorator
 {
     public static function getClassesToAttachTo(): array
     {
