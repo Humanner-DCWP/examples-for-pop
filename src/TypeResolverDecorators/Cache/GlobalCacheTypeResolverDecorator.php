@@ -2,7 +2,6 @@
 namespace Leoloso\ExamplesForPoP\TypeResolverDecorators\Cache;
 
 use PoP\ComponentModel\TypeResolvers\AbstractTypeResolver;
-use PoP\TranslateDirective\DirectiveResolvers\AbstractTranslateDirectiveResolver;
 use Leoloso\ExamplesForPoP\TypeResolverDecorators\Cache\AbstractCacheTypeResolverDecorator;
 
 /**
@@ -27,18 +26,6 @@ class GlobalCacheTypeResolverDecorator extends AbstractCacheTypeResolverDecorato
         return [
             'getJSON',
             'getAsyncJSON',
-        ];
-    }
-
-    /**
-     * Get the directives to cache
-     *
-     * @return array
-     */
-    protected function getDirectiveNamesToCache(): array
-    {
-        return [
-            AbstractTranslateDirectiveResolver::getDirectiveName(),
         ];
     }
 }
