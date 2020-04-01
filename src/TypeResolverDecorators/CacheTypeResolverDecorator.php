@@ -5,6 +5,7 @@ use PoP\ComponentModel\TypeResolvers\AbstractTypeResolver;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
 use PoP\Engine\DirectiveResolvers\Cache\SaveCacheDirectiveResolver;
+use PoP\TranslateDirective\DirectiveResolvers\AbstractTranslateDirectiveResolver;
 use PoP\AccessControl\TypeResolverDecorators\AbstractPublicSchemaTypeResolverDecorator;
 
 /**
@@ -20,27 +21,53 @@ class CacheTypeResolverDecorator extends AbstractPublicSchemaTypeResolverDecorat
     }
 
     /**
-     * Always @cache fields `getJSON` and `getAsyncJSON` for 1 hour
+     * Get the cache directive
+     *
+     * @return array
+     */
+    protected function getCacheDirective(): array
+    {
+        $fieldQueryInterpreter = FieldQueryInterpreterFacade::getInstance();
+        return $fieldQueryInterpreter->getDirective(
+            SaveCacheDirectiveResolver::getDirectiveName(),
+            [
+                'time' => 3600, // Cache it for 1 hour
+            ]
+        );
+    }
+
+    /**
+     * Cache fields `getJSON` and `getAsyncJSON` for 1 hour by adding directive @cache
      *
      * @param TypeResolverInterface $typeResolver
      * @return array
      */
     public function getMandatoryDirectivesForFields(TypeResolverInterface $typeResolver): array
     {
-        $mandatoryDirectivesForFields = [];
-        $fieldQueryInterpreter = FieldQueryInterpreterFacade::getInstance();
-        $cacheDirective = $fieldQueryInterpreter->getDirective(
-            SaveCacheDirectiveResolver::getDirectiveName(),
-            [
-                'time' => 3600, // Cache it for 1 hour
-            ]
-        );
-        $mandatoryDirectivesForFields['getJSON'] = [
-            $cacheDirective,
+        $cacheDirective = $this->getCacheDirective();
+        return [
+            'getJSON' => [
+                $cacheDirective,
+            ],
+            'getAsyncJSON' => [
+                $cacheDirective,
+            ],
         ];
-        $mandatoryDirectivesForFields['getAsyncJSON'] = [
-            $cacheDirective,
+    }
+
+    /**
+     * Cache directive `@translate` for 1 hour by adding directive @cache
+     *
+     * @param TypeResolverInterface $typeResolver
+     * @return array
+     */
+    public function getSucceedingMandatoryDirectivesForDirectives(TypeResolverInterface $typeResolver): array
+    {
+        $cacheDirective = $this->getCacheDirective();
+        return [
+            AbstractTranslateDirectiveResolver::getDirectiveName() => [
+                $cacheDirective,
+            ],
         ];
-        return $mandatoryDirectivesForFields;
     }
 }
