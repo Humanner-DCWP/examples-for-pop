@@ -24,7 +24,11 @@ class RootCacheTypeResolverDecorator extends AbstractCacheTypeResolverDecorator
     protected function getFieldNamesToCache(): array
     {
         return [
-            'fullSchema',
+            'meshServices',
+            'meshServiceData',
+            'contentMesh',
+            'userServiceURLs',
+            'userServiceData',
         ];
     }
 }
