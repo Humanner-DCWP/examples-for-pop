@@ -97,50 +97,56 @@ EOT;
             $translationAPI->__('Pre-defined set of user properties', 'examples-for-pop')
         );
 
-        // GraphQL fragments
-        $userPropsGraphQLPersistedFragment = <<<EOT
-        {
-            id
-            name
-            url
-        }
-EOT;
-        // Inject the values into the service
-        GraphQLPersistedQueryUtils::addPersistedFragment(
-            'userProps',
-            $userPropsGraphQLPersistedFragment,
-            $translationAPI->__('User properties', 'examples-for-pop')
-        );
+        /**
+         * Watch out! The GraphqL queries will be parsed ALWAYS, for every request!
+         * So it's not a good idea to add them... Should wait until adding
+         * some other layer that parses the query only if it is requested
+         * (TODO. Check in class GraphQLPersistedQueryUtils)
+         */
+//         // GraphQL fragments
+//         $userPropsGraphQLPersistedFragment = <<<EOT
+//         {
+//             id
+//             name
+//             url
+//         }
+// EOT;
+//         // Inject the values into the service
+//         GraphQLPersistedQueryUtils::addPersistedFragment(
+//             'userProps',
+//             $userPropsGraphQLPersistedFragment,
+//             $translationAPI->__('User properties', 'examples-for-pop')
+//         );
 
-        // GraphQL queries
-        $userPropsGraphQLPersistedQuery = <<<EOT
-        query {
-            users {
-                ...userProps
-                posts {
-                    id
-                    title
-                    url
-                    comments {
-                        id
-                        date
-                        content
-                    }
-                }
-            }
-        }
+//         // GraphQL queries
+//         $userPropsGraphQLPersistedQuery = <<<EOT
+//         query {
+//             users {
+//                 ...userProps
+//                 posts {
+//                     id
+//                     title
+//                     url
+//                     comments {
+//                         id
+//                         date
+//                         content
+//                     }
+//                 }
+//             }
+//         }
 
-        fragment userProps on User {
-            id
-            name
-            url
-        }
-EOT;
-        // Inject the values into the service
-        GraphQLPersistedQueryUtils::addPersistedQuery(
-            'userPostsComments',
-            $userPropsGraphQLPersistedQuery,
-            $translationAPI->__('User properties, posts and comments', 'examples-for-pop')
-        );
+//         fragment userProps on User {
+//             id
+//             name
+//             url
+//         }
+// EOT;
+//         // Inject the values into the service
+//         GraphQLPersistedQueryUtils::addPersistedQuery(
+//             'userPostsComments',
+//             $userPropsGraphQLPersistedQuery,
+//             $translationAPI->__('User properties, posts and comments', 'examples-for-pop')
+//         );
     }
 }
