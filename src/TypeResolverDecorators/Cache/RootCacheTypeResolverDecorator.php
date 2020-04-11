@@ -1,7 +1,7 @@
 <?php
 namespace Leoloso\ExamplesForPoP\TypeResolverDecorators\Cache;
 
-use PoP\API\TypeResolvers\RootTypeResolver;
+use PoP\Engine\TypeResolvers\RootTypeResolver;
 use Leoloso\ExamplesForPoP\TypeResolverDecorators\Cache\AbstractCacheTypeResolverDecorator;
 
 /**
