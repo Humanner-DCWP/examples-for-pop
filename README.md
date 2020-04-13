@@ -30,8 +30,6 @@ $ composer require leoloso/examples-for-pop dev-master
 }
 ```
 
-([PoP](https://github.com/leoloso/PoP) must be installed)
-
 <!--
 ## Usage
 
