@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Leoloso\ExamplesForPoP\FieldResolvers;
+namespace Leoloso\ExamplesForPoP\FieldResolvers\Legacy\Version_0_1_0;
 
 use PoP\ComponentModel\Misc\GeneralUtils;
 use PoP\Engine\TypeResolvers\RootTypeResolver;
@@ -13,7 +13,7 @@ use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
 use PoP\ComponentModel\FieldResolvers\AbstractDBDataFieldResolver;
 
-class Root_Version_0_1_0_FieldResolver extends AbstractDBDataFieldResolver
+class RootFieldResolver extends AbstractDBDataFieldResolver
 {
     public static function getClassesToAttachTo(): array
     {

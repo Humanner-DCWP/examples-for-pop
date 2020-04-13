@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Leoloso\ExamplesForPoP\FieldResolvers;
+namespace Leoloso\ExamplesForPoP\FieldResolvers\Legacy\Version_0_2_0;
 
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 
-class Root_Version_0_2_0_FieldResolver extends Root_Version_0_1_0_FieldResolver
+class RootFieldResolver extends \Leoloso\ExamplesForPoP\FieldResolvers\Legacy\Version_0_1_0\RootFieldResolver
 {
     public function getSchemaFieldVersion(TypeResolverInterface $typeResolver, string $fieldName): ?string
     {
