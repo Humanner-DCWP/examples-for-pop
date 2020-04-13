@@ -109,7 +109,10 @@ class MeshRootFieldResolver extends AbstractDBDataFieldResolver
                     $fieldQueryInterpreter->getField(
                         'meshServices',
                         $fieldArgs
-                    ), $variables, $expressions, $options
+                    ),
+                    $variables,
+                    $expressions,
+                    $options
                 );
                 if (GeneralUtils::isError($meshServices)) {
                     return $meshServices;
@@ -122,7 +125,10 @@ class MeshRootFieldResolver extends AbstractDBDataFieldResolver
                         [
                             'urls' => $meshServices,
                         ]
-                    ), $variables, $expressions, $options
+                    ),
+                    $variables,
+                    $expressions,
+                    $options
                 );
             case 'contentMesh':
                 $meshServiceData = $typeResolver->resolveValue(
@@ -130,7 +136,10 @@ class MeshRootFieldResolver extends AbstractDBDataFieldResolver
                     $fieldQueryInterpreter->getField(
                         'meshServiceData',
                         $fieldArgs
-                    ), $variables, $expressions, $options
+                    ),
+                    $variables,
+                    $expressions,
+                    $options
                 );
                 if (GeneralUtils::isError($meshServiceData)) {
                     return $meshServiceData;
@@ -144,7 +153,10 @@ class MeshRootFieldResolver extends AbstractDBDataFieldResolver
                             'object' => $meshServiceData,
                             'path' => 'weather.periods',
                         ]
-                    ), $variables, $expressions, $options
+                    ),
+                    $variables,
+                    $expressions,
+                    $options
                 );
                 $photoGalleryURLs = $typeResolver->resolveValue(
                     $resultItem,
@@ -154,7 +166,10 @@ class MeshRootFieldResolver extends AbstractDBDataFieldResolver
                             'object' => $meshServiceData,
                             'path' => 'photos.url',
                         ]
-                    ), $variables, $expressions, $options
+                    ),
+                    $variables,
+                    $expressions,
+                    $options
                 );
                 $githubMetaDescription = $typeResolver->resolveValue(
                     $resultItem,
@@ -164,7 +179,10 @@ class MeshRootFieldResolver extends AbstractDBDataFieldResolver
                             'object' => $meshServiceData,
                             'path' => 'github.description',
                         ]
-                    ), $variables, $expressions, $options
+                    ),
+                    $variables,
+                    $expressions,
+                    $options
                 );
                 $githubMetaStarCount = $typeResolver->resolveValue(
                     $resultItem,
@@ -174,7 +192,10 @@ class MeshRootFieldResolver extends AbstractDBDataFieldResolver
                             'object' => $meshServiceData,
                             'path' => 'github.stargazers_count',
                         ]
-                    ), $variables, $expressions, $options
+                    ),
+                    $variables,
+                    $expressions,
+                    $options
                 );
                 $maybeErrors = array_filter(
                     [
@@ -183,7 +204,7 @@ class MeshRootFieldResolver extends AbstractDBDataFieldResolver
                         $githubMetaDescription,
                         $githubMetaStarCount,
                     ],
-                    function($fieldValue) {
+                    function ($fieldValue) {
                         return GeneralUtils::isError($fieldValue);
                     }
                 );

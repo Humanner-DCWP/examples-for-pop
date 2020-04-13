@@ -28,7 +28,7 @@ class Root_Version_0_2_0_FieldResolver extends Root_Version_0_1_0_FieldResolver
             case 'userServiceData':
                 // Find the "githubRepo" parameter, and change its default value
                 return array_map(
-                    function($arg) {
+                    function ($arg) {
                         if ($arg[SchemaDefinition::ARGNAME_NAME] == 'githubRepo') {
                             $arg[SchemaDefinition::ARGNAME_DEFAULT_VALUE] = 'getpop/component-model';
                         }
