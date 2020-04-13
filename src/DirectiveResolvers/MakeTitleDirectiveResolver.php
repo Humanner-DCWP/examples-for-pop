@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Leoloso\ExamplesForPoP\DirectiveResolvers;
 
 use PoP\ComponentModel\Environment;

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Leoloso\ExamplesForPoP\FieldResolvers;
 
 use PoP\ComponentModel\Schema\SchemaDefinition;

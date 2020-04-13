@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Leoloso\ExamplesForPoP\Config;
 
 use PoP\Translation\Facades\TranslationAPIFacade;
