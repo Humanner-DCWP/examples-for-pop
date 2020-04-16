@@ -26,8 +26,8 @@
     "require": {
         "php" : "~7.1",
         "getpop/api": "^1.0",
-        "getpop/graphql": "~0.1",
-        "getpop/cdn-directive": "~0.1"
+        "getpop/graphql": "dev-master",
+        "getpop/cdn-directive": "dev-master"
     },
     "require-dev": {
         "phpstan/phpstan": "^0.12",
