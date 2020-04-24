@@ -47,9 +47,13 @@ class MakeTitle_Version_0_1_0_DirectiveResolver extends AbstractGlobalDirectiveR
         array &$dbErrors,
         array &$dbWarnings,
         array &$dbDeprecations,
+        array &$dbNotices,
+        array &$dbTraces,
         array &$schemaErrors,
         array &$schemaWarnings,
-        array &$schemaDeprecations
+        array &$schemaDeprecations,
+        array &$schemaNotices,
+        array &$schemaTraces
     ): void {
         $fieldQueryInterpreter = FieldQueryInterpreterFacade::getInstance();
         foreach ($idsDataFields as $id => $dataFields) {

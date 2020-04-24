@@ -40,9 +40,13 @@ class MakeTitle_Version_0_2_0_DirectiveResolver extends MakeTitle_Version_0_1_0_
         array &$dbErrors,
         array &$dbWarnings,
         array &$dbDeprecations,
+        array &$dbNotices,
+        array &$dbTraces,
         array &$schemaErrors,
         array &$schemaWarnings,
-        array &$schemaDeprecations
+        array &$schemaDeprecations,
+        array &$schemaNotices,
+        array &$schemaTraces
     ): void {
         $fieldQueryInterpreter = FieldQueryInterpreterFacade::getInstance();
         foreach ($idsDataFields as $id => $dataFields) {
