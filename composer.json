@@ -37,10 +37,7 @@
     "autoload": {
         "psr-4": {
             "Leoloso\\ExamplesForPoP\\": "src"
-        },
-        "files": [
-            "initialize.php"
-        ]
+        }
     },
     "autoload-dev": {
         "psr-4": {
