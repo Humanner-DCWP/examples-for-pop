@@ -18,6 +18,15 @@ class Component extends AbstractComponent
     use YAMLServicesTrait;
     const VERSION = '0.2.0';
 
+    public static function getDependedComponentClasses(): array
+    {
+        return [
+            \PoP\GraphQL\Component::class,
+            \PoP\API\Component::class,
+            \PoP\CDNDirective\Component::class,
+        ];
+    }
+
     /**
      * Initialize services
      */
